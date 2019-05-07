@@ -75,9 +75,9 @@ setuptools=40.4.3=py36_0
 sip=4.19.8=py36hf484d3e_0
 six=1.11.0=py36_1
 sqlite=3.26.0=h7b6447c_0
-tensorboard=1.11.0=py36hf484d3e_0
-tensorflow=1.11.0=mkl_py36ha6f0bda_0
-tensorflow-base=1.11.0=mkl_py36h3c3e929_0
+tensorboard=>=1.12.1
+tensorflow>=1.12.1
+tensorflow-base>=1.12.1
 termcolor=1.1.0=py36_1
 tk=8.6.8=hbc83047_0
 toolz=0.9.0=py36_0
