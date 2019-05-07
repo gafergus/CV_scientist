@@ -1,0 +1,12 @@
+include config.gin
+include config_UNIT_TEST.gin
+include config_vis.gin
+include config_Docker.gin
+include Dockerfile
+include CV_exp_Example.ipynb  
+include cv_unit_test 
+include main_vis.py  
+include requirements.txt
+include config_vis.gin 
+include LICENSE.txt
+include  __init__.py

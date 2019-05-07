@@ -1,0 +1,93 @@
+
+###################### Global Experiment Parameters ######################
+# Each experiment should have its own configuration file. These variables are always be preceded by CompVisExperiment.
+
+# Parameters
+CompVisExperiment.base_directory='/data/gferguso/cv_unit_test/'
+CompVisExperiment.experiment_name='WB_Unit_Test_symlink'
+CompVisExperiment.image_directory='/data/gferguso/cv_unit_test/cv_unit_test_image_dir'
+CompVisExperiment.labels_csv='color_field_files.csv'
+CompVisExperiment.file_name_column='file_name'
+CompVisExperiment.labels_column='class'
+CompVisExperiment.use_symlinks=True
+
+###################### Global Dataset Parameters ######################
+# In the cases this where these need to change, e.g., learning curves,
+# each set of data should be a new experiment.
+
+# Dataset Parameters
+FilePrep.remake_train_test=False
+FilePrep.train=0.60
+
+###################### Model-Specific Dataset Parameters ######################
+# Variable names MUST match those in sent in the model dictionary, e.g, the model_dict
+# {'simple_CNN':['sim_dog', 'sim_cat'], 'ResNet50':['res_dog', 'res_cat']} sets two instances of the
+# Simple CNN architecture to the names sim_dog and sim_cat and two instances of ResNet50 architecture to the names
+# res_dog and res_cat. Variables can then be set as follows: sim_cat/ = value sets the learning rate for the
+# simple_CNN architecture with the name sim_cat. Variables without a name are set for ALL models. If a global
+# default is not set then sertting must be applied to each model.
+
+# Data Shape Parameters
+data_shape.input=(128, 128, 1)
+sim_cat/data_shape.input=(32, 32, 1)
+res_cat/data_shape.input=(64, 64, 1)
+data_shape.output=(2)
+
+# Overall Generator Parameters
+directory_flow.dir='.'
+directory_flow.batch_size=10
+directory_flow.color_mode='grayscale'
+directory_flow.class_mode='categorical'
+directory_flow.seed=42
+directory_flow.interpolation='nearest'
+
+# Batch Generator Parameters
+fit_generator.epochs=3
+fit_generator.class_weight=None
+
+# Image Generator Parameters
+image_generator.featurewise_center=False
+image_generator.samplewise_center=False
+image_generator.featurewise_std_normalization=False
+image_generator.samplewise_std_normalization=False
+image_generator.zca_whitening=False
+image_generator.zca_epsilon=1e-06
+image_generator.rotation_range=0
+image_generator.width_shift_range=0.0
+image_generator.height_shift_range=0.0
+image_generator.brightness_range=None
+image_generator.shear_range=0.0
+image_generator.zoom_range=0.0
+image_generator.channel_shift_range=0.0
+image_generator.fill_mode='nearest'
+image_generator.cval=0.0
+image_generator.horizontal_flip=False
+image_generator.vertical_flip=False
+#image_generator.rescale=1.0/255
+image_generator.preprocessing_function=None
+
+###################### Model Specific Parameters ######################
+# Variables set for each model
+
+# Model Parameters
+# NOTE: Incoreect optimizer parameters will be ignored, e.g., setting the rho parameter
+# for the Adam optimizer will have no effect
+sim_cat/comp_model.lr=0.01
+sim_dog/comp_model.lr=0.0001
+res_cat/comp_model.lr=0.01
+res_dog/comp_model.lr=0.0001
+comp_model.optimizer='Adam'
+comp_model.loss='categorical_crossentropy'
+#comp_model.metrics=None
+#comp_model.momentum=None
+#comp_model.decay=None
+#comp_model.nestrov=None
+#comp_model.rho=None
+#comp_model.epsilon=None
+#comp_model.beta_1=None
+#comp_model.beta_2=None
+#comp_model.amsgrad=None
+#comp_model.schedule_decay=None
+
+# Add callbacks
+callback_list.calls=None

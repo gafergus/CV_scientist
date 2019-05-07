@@ -1,0 +1,23 @@
+# Model Load options
+#load_model.model_name='ResNet50.h5'
+#load_model.model_path=None
+
+# Images to infer
+#load_images.image_dir_path=
+
+# Vis settings for CAMs
+# ActMax.model=None
+# ActMax.layer_name=None
+# ActMax.filter_index=0
+# ActMax.backprop_modifier=None
+# ActMax.grad_modifier=None
+# ActMax.act_max_weight=None
+# ActMax.lp_norm_weight=0.
+# ActMax.tv_weight=0.
+# ActMax.input_range=None
+# ActMax.verbose=False
+# ActMax.opt_max_iter=200
+
+# Set the input shape for the images
+set_input_output.input_shape=(128, 128, 1)
+set_input_output.output_shape=(3)
