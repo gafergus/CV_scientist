@@ -63,7 +63,6 @@ class FilePrep:
     def _train_test_val(self, data_labels_df):
         img_train, img_test_val, label_train, label_test_val  = train_test_split(data_labels_df[self.image_paths_col],
                                                                                  data_labels_df[self.data_labels_column],
-                                                                                 train_size=self.train,
                                                                                  test_size=1-self.train,
                                                                                  random_state=42)
         img_test, img_val, label_test, label_val = train_test_split(img_test_val, label_test_val,
