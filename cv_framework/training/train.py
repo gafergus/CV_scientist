@@ -1,5 +1,6 @@
 import gin
 import keras
+import tensorflow as tf
 from cv_framework.metrics.metrics import Summary_metrics
 
 @gin.configurable
@@ -7,16 +8,16 @@ def callback_list(calls=None, gen=None, checkpoint_name='test.h5'):
     added_calls = [] if not calls else calls
     check_name = f'{checkpoint_name}_checkpoint.h5'
 
-    checkpoint_callback = keras.callbacks.ModelCheckpoint(
+    checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
         check_name,
         monitor="val_loss",
         verbose=1,
         save_best_only=True,
         period=1
     )
-    tb_callback = keras.callbacks.TensorBoard(log_dir='./logs')
-    earlystopping_callback = keras.callbacks.EarlyStopping(monitor="val_loss", patience=3, verbose=1)
-    rop_callback = keras.callbacks.ReduceLROnPlateau(
+    tb_callback = tf.keras.callbacks.TensorBoard(log_dir='./logs')
+    earlystopping_callback = tf.keras.callbacks.EarlyStopping(monitor="val_loss", patience=3, verbose=1)
+    rop_callback = tf.keras.callbacks.ReduceLROnPlateau(
         monitor='val_loss',
         factor=0.1,
         patience=5,
