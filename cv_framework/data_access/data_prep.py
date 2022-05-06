@@ -36,8 +36,7 @@ class FilePrep:
         files_df = pd.DataFrame.from_dict({file_name_col: file_names, self.image_paths_col:file_list})
         data = pd.merge(files_df, labels_df, how='inner', on=[file_name_col])
         data = data.drop_duplicates(subset=[file_name_col])
-        data_no_id = data.drop(columns=[file_name_col])
-        return data_no_id
+        return data.drop(columns=[file_name_col])
 
     def _make_dirs(self, paths):
         assert isinstance(paths, list), 'Only make directories from lists, not {}'.format(type(paths))
@@ -45,9 +44,7 @@ class FilePrep:
             if self.remake_dirs:
                 if os.path.exists(path):
                     shutil.rmtree(path)
-                    os.makedirs(path)
-                else:
-                    os.makedirs(path)
+                os.makedirs(path)
             else:
                 try:
                     os.makedirs(path)
@@ -68,11 +65,16 @@ class FilePrep:
         img_test, img_val, label_test, label_val = train_test_split(img_test_val, label_test_val,
                                                                     train_size=0.5,
                                                                     random_state=42)
-        data_dict = {'img_train':img_train,'label_train':label_train,'img_test':img_test,'label_test':label_test,
-                     'img_val':img_val,'label_val':label_val}
-        return data_dict
+        return {
+            'img_train': img_train,
+            'label_train': label_train,
+            'img_test': img_test,
+            'label_test': label_test,
+            'img_val': img_val,
+            'label_val': label_val,
+        }
 
-    def create_modeling_dataset(self):
+    def create_modeling_dataset(self):  # sourcery no-metrics
         data_labels = self._make_class_df()
         if data_labels.empty:
             raise ValueError(f'No file names matching those in class dataframe in the directory {self.image_directory}')

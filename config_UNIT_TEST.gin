@@ -70,7 +70,7 @@ image_generator.preprocessing_function=None
 # Variables set for each model
 
 # Model Parameters
-# NOTE: Incoreect optimizer parameters will be ignored, e.g., setting the rho parameter
+# NOTE: Incorrect optimizer parameters will be ignored, e.g., setting the rho parameter
 # for the Adam optimizer will have no effect
 sim_cat/comp_model.lr=0.01
 sim_dog/comp_model.lr=0.0001

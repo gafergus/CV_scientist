@@ -1,7 +1,6 @@
 import gin
 from cv_framework.inference.infer import load_model
 from cv_framework.diagnostics.advanced_diagnostics import shap_maps
-from cv_framework.model_definitions.model_utils import set_input_output
 from cv_framework.metrics.metrics import muilticlass_logloss
 
 def run():
@@ -41,7 +40,7 @@ def run():
         '/data/gferguso/cord_comp/images/train/class_002_Normal/7257e3de-ff3d-4b37-9450-937abfae06dd.png'
     ]
     images = ['/data/gferguso/cord_comp/images/train/class_000_Lung_Opacity/72a10e64-2d93-4b61-8b90-8efef7284ced.png']
-    custom_losses = {'muilticlass_logloss':muilticlass_logloss}
+    custom_losses = {'muilticlass_logloss': muilticlass_logloss}
     model = load_model(model_name=model_name, model_path='/data/gferguso/cord_comp/', custom_objects=custom_losses)
     model.summary()
     image_size, _, _ = set_input_output()

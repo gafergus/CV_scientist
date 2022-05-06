@@ -15,6 +15,9 @@ def opt_params(optimizer, params):
         'Nadam':{'lr':0.002, 'beta_1':0.9, 'beta_2':0.999, 'epsilon':None, 'schedule_decay':0.004},
     }
 
+    values = params.values()
+    if all(x is None for x in values):
+        return params_default_dict[optimizer]
     allowed_opt_params = {
         'SGD':[
             'lr',
@@ -63,15 +66,11 @@ def opt_params(optimizer, params):
         ]
     }
 
-    values = params.values()
-    if  all([True if x == None else False for x in values]):
-        return params_default_dict[optimizer]
-    else:
-        for key in list(params.keys()):
-            if key not in allowed_opt_params[optimizer]:
-                params.pop(key)
-            elif not params[key]:
-                params[key] = params_default_dict[optimizer][key]
+    for key in list(params.keys()):
+        if key not in allowed_opt_params[optimizer]:
+            params.pop(key)
+        elif not params[key]:
+            params[key] = params_default_dict[optimizer][key]
     return params
 
 @gin.configurable

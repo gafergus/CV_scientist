@@ -1,9 +1,5 @@
-import keras
 from keras.callbacks import Callback
-from keras import backend as K
-import numpy as np
-import sklearn
-import math
+import tensorflow as tf
 
 class Summary_metrics(Callback):
     def __init__(self, val_gen):
@@ -28,4 +24,4 @@ class Summary_metrics(Callback):
         #print('Classification Report: \n{}'.format(report))
 
 def muilticlass_logloss(y_true, y_pred):
-   return K.tf.losses.log_loss(y_true, y_pred)
+   return tf.losses.log_loss(y_true, y_pred)

@@ -1,4 +1,4 @@
-import keras
+import tensorflow as tf
 import gin
 
 @gin.configurable
@@ -24,7 +24,7 @@ def image_generator(
         preprocessing_function=None,
         data_format=None,
         validation_split=0.0):
-    datagen = keras.preprocessing.image.ImageDataGenerator(
+    return tf.keras.preprocessing.image.ImageDataGenerator(
         featurewise_center=featurewise_center,
         samplewise_center=samplewise_center,
         featurewise_std_normalization=featurewise_std_normalization,
@@ -46,13 +46,12 @@ def image_generator(
         preprocessing_function=preprocessing_function,
         data_format=data_format,
         validation_split=validation_split)
-    return datagen
 
 @gin.configurable
 def directory_flow(dir='.', image_size=None, batch_size=32, color_mode='greyscale',
                    class_mode='categorical', shuffle=False, seed=42, interpolation='nearest'):
     gen = image_generator()
-    name = gen.flow_from_directory(
+    return gen.flow_from_directory(
         directory=dir,
         target_size=image_size,
         batch_size=batch_size,
@@ -61,4 +60,3 @@ def directory_flow(dir='.', image_size=None, batch_size=32, color_mode='greyscal
         shuffle=shuffle,
         seed=seed,
         interpolation=interpolation)
-    return name

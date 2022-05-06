@@ -23,8 +23,7 @@ def load_images(image_dir_path=None, model_name=None):
 @gin.configurable
 def load_model(model_name=None, model_path=None, custom_objects=None):
     load_path = os.path.join(model_path, model_name)
-    model = keras.models.load_model(load_path, custom_objects=custom_objects)
-    return model
+    return keras.models.load_model(load_path, custom_objects=custom_objects)
 
 # @gin.configurable
 # def evaluate_model(image_path=None, image_labels=None, model_name=None, model_path=None, batch_size=32):
@@ -38,6 +37,5 @@ def infer_classes(image_path=None, model_name=None, model_path=None, custom_obje
     infer_gen = load_images(image_dir_path=image_path, model_name=model_name)
     model = load_model(model_name=model_name, model_path=model_path, custom_objects=custom_objects)
     num_steps = math.ceil(len(infer_gen.classes) / infer_gen.batch_size)
-    preds = model.predict_generator(infer_gen, steps=num_steps, verbose=0)
-    return preds
+    return model.predict_generator(infer_gen, steps=num_steps, verbose=0)
 

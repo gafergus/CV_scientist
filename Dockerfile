@@ -1,5 +1,5 @@
 FROM intelaipg/intel-optimized-tensorflow:latest-mkl-py3
-LABEL maintainer="Glen Ferguson and Michoel Snow, all blame to the latter and glory to the former!"
+LABEL maintainer="Glen Ferguson, Michoel Snow, and Tara Blackburn"
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y --allow-downgrades --no-install-recommends \

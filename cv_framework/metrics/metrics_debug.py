@@ -86,13 +86,11 @@ def F1_score(y_true, y_pred, smooth=1.0):
 
 def sensitivity(y_true, y_pred, smooth=1.):
     intersection = tf.reduce_sum(y_true * y_pred)
-    coef = (intersection + smooth) / (tf.reduce_sum(y_true) + smooth)
-    return coef
+    return (intersection + smooth) / (tf.reduce_sum(y_true) + smooth)
 
 def specificity(y_true, y_pred, smooth=1.):
     intersection = tf.reduce_sum(y_true * y_pred)
-    coef = (intersection + smooth) / (tf.reduce_sum(y_pred) + smooth)
-    return coef
+    return (intersection + smooth) / (tf.reduce_sum(y_pred) + smooth)
 
 def muilticlass_logloss(y_true, y_pred):
     return tf.losses.log_loss(y_true, y_pred)
@@ -101,5 +99,6 @@ def dice_coef_loss(y_true, y_pred, smooth=1.):
     y_true_f = K.flatten(y_true)
     y_pred_f = K.flatten(y_pred)
     intersection = K.sum(y_true_f * y_pred_f)
-    loss = -K.log(2. * intersection + smooth) + K.log((K.sum(y_true_f) + K.sum(y_pred_f) + smooth))
-    return loss
+    return -K.log(2.0 * intersection + smooth) + K.log(
+        (K.sum(y_true_f) + K.sum(y_pred_f) + smooth)
+    )

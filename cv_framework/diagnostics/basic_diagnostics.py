@@ -19,7 +19,7 @@ def loss_vs_Epochs(history, save_figs=False, model_name=None):
     plt.ylabel('Loss')
     plt.legend()
     if save_figs:
-        plt.savefig(str(model_name) + '.svg')
+        plt.savefig(f'{str(model_name)}.svg')
     plt.show()
 
 @gin.configurable
@@ -35,7 +35,7 @@ def acc_vs_Epochs(history, save_figs=False, model_name=None):
     plt.ylabel('accuracy')
     plt.legend()
     if save_figs:
-        plt.savefig(str(model_name) + '.svg')
+        plt.savefig(f'{str(model_name)}.svg')
     plt.show()
 
 @gin.configurable
@@ -51,7 +51,7 @@ def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix'
     else:
         print('Confusion matrix, without normalization')
 
-    fig_title = title + '_' + model_name
+    fig_title = f'{title}_{model_name}'
 
     plt.imshow(cm, interpolation='nearest', cmap=cmap)
     plt.title(fig_title)
@@ -71,7 +71,7 @@ def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix'
     plt.xlabel('Predicted label')
     plt.tight_layout()
     if save_figs:
-        plt.savefig(str(model_name) + '.svg')
+        plt.savefig(f'{str(model_name)}.svg')
     plt.show()
 
 @gin.configurable

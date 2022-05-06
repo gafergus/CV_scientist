@@ -1,9 +1,8 @@
-import keras
-from keras.backend import tf as ktf
+import tensorflow as tf
 
 def Multiscale_CNN(input_shape=None, classes=3):
     '''Instantiates the Multiscale CNN architecture.'''
-    img_input = keras.layers.Input(shape=input_shape)
+    img_input = tf.keras.layers.Input(shape=input_shape)
     # Scale 1  network
     scale_01_conv=conv2d(img_input, filters=[16,16,16], kernel_size=(5,5), strides=1, pad=2, activation='relu',
                          pool_kernel=64,pool_stride=64,name='scl_01',scale_shape=(input_shape[0]//1,input_shape[1]//1))
@@ -26,22 +25,21 @@ def Multiscale_CNN(input_shape=None, classes=3):
     scale_64_conv=conv2d(img_input, filters=[64,64,64], kernel_size=(5 , 5), strides=1, pad=2, activation='relu',
                          pool_kernel=1,pool_stride=1,name='scl_64',scale_shape=(input_shape[0]//64,input_shape[1]//64))
     # Concatenate subnetworks
-    x = keras.layers.concatenate([scale_01_conv, scale_02_conv, scale_04_conv, scale_08_conv, scale_16_conv,
+    x = tf.keras.layers.concatenate([scale_01_conv, scale_02_conv, scale_04_conv, scale_08_conv, scale_16_conv,
                                   scale_32_conv, scale_64_conv])
     # Final convolution
-    x = keras.layers.Conv2D(1024, (1, 1), strides=1, kernel_initializer='he_normal',
+    x = tf.keras.layers.Conv2D(1024, (1, 1), strides=1, kernel_initializer='he_normal',
                             name='conv2d_final')(x)
-    x = keras.layers.Activation('relu', name= 'act_conv_final')(x)
-    x = keras.layers.MaxPool2D(pool_size=2, strides=2)(x)
+    x = tf.keras.layers.Activation('relu', name= 'act_conv_final')(x)
+    x = tf.keras.layers.MaxPool2D(pool_size=2, strides=2)(x)
     # Add dense layer
-    x = keras.layers.Flatten()(x)
-    x = keras.layers.Dense(512, use_bias=True, kernel_initializer='he_uniform')(x)
-    x = keras.layers.Activation('relu', name= 'act_dense')(x)
+    x = tf.keras.layers.Flatten()(x)
+    x = tf.keras.layers.Dense(512, use_bias=True, kernel_initializer='he_uniform')(x)
+    x = tf.keras.layers.Activation('relu', name= 'act_dense')(x)
     # prediction layer
-    pred = keras.layers.Dense(classes, use_bias=True, kernel_initializer='he_uniform')(x)
-    pred = keras.layers.Activation('softmax')(pred)
-    model = keras.Model(inputs=img_input, outputs=pred)
-    return model
+    pred = tf.keras.layers.Dense(classes, use_bias=True, kernel_initializer='he_uniform')(x)
+    pred = tf.keras.layers.Activation('softmax')(pred)
+    return tf.keras.Model(inputs=img_input, outputs=pred)
 
 def conv2d(x, filters=None, kernel_size=None,  scale_shape=None, strides=1, pad=2, activation='relu', pool_kernel=None,
            pool_stride=None, name=None):
@@ -49,24 +47,24 @@ def conv2d(x, filters=None, kernel_size=None,  scale_shape=None, strides=1, pad=
     act_base = 'act_'
     bn_base  = 'bn_'
     conv_base = 'conv2d_'
-    x = keras.layers.Lambda(lambda image: ktf.image.resize_images(image, scale_shape))(x)
-    x = keras.layers.ZeroPadding2D(padding=pad)(x)
-    x = keras.layers.Conv2D(filters[0], kernel_size, strides=strides, kernel_initializer='he_normal',
+    x = tf.keras.layers.Lambda(lambda image: tf.keras.image.resize_images(image, scale_shape))(x)
+    x = tf.keras.layers.ZeroPadding2D(padding=pad)(x)
+    x = tf.keras.layers.Conv2D(filters[0], kernel_size, strides=strides, kernel_initializer='he_normal',
                             name= conv_base + name + '1')(x)
-    x = keras.layers.BatchNormalization(name=bn_base + name + '1')(x)
-    x = keras.layers.Activation(activation, name= act_base + name + '1')(x)
+    x = tf.keras.layers.BatchNormalization(name=bn_base + name + '1')(x)
+    x = tf.keras.layers.Activation(activation, name= act_base + name + '1')(x)
 
-    x = keras.layers.ZeroPadding2D(padding=pad)(x)
-    x = keras.layers.Conv2D(filters[1], kernel_size, strides=strides, kernel_initializer='he_normal',
+    x = tf.keras.layers.ZeroPadding2D(padding=pad)(x)
+    x = tf.keras.layers.Conv2D(filters[1], kernel_size, strides=strides, kernel_initializer='he_normal',
                             name= conv_base + name + '2')(x)
-    x = keras.layers.BatchNormalization(name=bn_base + name + '2')(x)
-    x = keras.layers.Activation(activation, name= act_base + name + '2')(x)
+    x = tf.keras.layers.BatchNormalization(name=bn_base + name + '2')(x)
+    x = tf.keras.layers.Activation(activation, name= act_base + name + '2')(x)
 
-    x = keras.layers.ZeroPadding2D(padding=pad)(x)
-    x = keras.layers.Conv2D(filters[1], kernel_size, strides=strides, kernel_initializer='he_normal',
+    x = tf.keras.layers.ZeroPadding2D(padding=pad)(x)
+    x = tf.keras.layers.Conv2D(filters[1], kernel_size, strides=strides, kernel_initializer='he_normal',
                             name= conv_base + name + '3')(x)
-    x = keras.layers.BatchNormalization(name=bn_base + name + '3')(x)
-    x = keras.layers.Activation(activation, name = act_base + name + '3')(x)
-    x = keras.layers.MaxPool2D(pool_size=pool_kernel, strides=pool_stride, name= 'pool_' + name)(x)
+    x = tf.keras.layers.BatchNormalization(name=bn_base + name + '3')(x)
+    x = tf.keras.layers.Activation(activation, name = act_base + name + '3')(x)
+    x = tf.keras.layers.MaxPool2D(pool_size=pool_kernel, strides=pool_stride, name= 'pool_' + name)(x)
     return x
 

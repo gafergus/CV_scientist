@@ -10,6 +10,7 @@ for l in np.linspace(0, 1, 100):
     colors.append((255. / 255, 13. / 255, 87. / 255, l))
 red_transparent_blue = LinearSegmentedColormap.from_list("red_transparent_blue", colors)
 
+
 def shap_image_plot(shap_values, x, labels=None, show=False, model_name=None):
     """ Plots SHAP values for image inputs.
     """

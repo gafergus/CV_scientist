@@ -7,9 +7,9 @@ print(required)
 
 setup(
     name='CV_Scientist',
-    version='0.01',
-    description="Aframework for rapidly prototyping CV model using keras and TF",
-    author="Glen Ferguson and Michoel Snow",
+    version='0.09',
+    description="A framework for rapidly prototyping CV model using keras and TF",
+    author="Glen Ferguson, Michoel Snow, and Tara Blackburn",
     author_email='glen@ferguson76.com',
     packages=find_packages(),
     install_requires=required,

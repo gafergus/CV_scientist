@@ -4,12 +4,8 @@ from cv_framework.metrics.metrics import Summary_metrics
 
 @gin.configurable
 def callback_list(calls=None, gen=None, checkpoint_name='test.h5'):
-    if not calls:
-        added_calls = []
-    else:
-        added_calls = calls
-
-    check_name = checkpoint_name + '_checkpoint' + '.h5'
+    added_calls = [] if not calls else calls
+    check_name = f'{checkpoint_name}_checkpoint.h5'
 
     checkpoint_callback = keras.callbacks.ModelCheckpoint(
         check_name,
@@ -33,8 +29,7 @@ def callback_list(calls=None, gen=None, checkpoint_name='test.h5'):
     Summary_metrics_callback = Summary_metrics(val_gen=gen)
 
     base_calls = [tb_callback, checkpoint_callback, earlystopping_callback, rop_callback, Summary_metrics_callback]
-    fin_calls = base_calls + added_calls
-    return fin_calls
+    return base_calls + added_calls
 
 @gin.configurable
 def fit_generator(model_name=None,model=None, gen=None, epochs=100, validation_data=None, class_weight=None, workers=1,
@@ -42,7 +37,7 @@ def fit_generator(model_name=None,model=None, gen=None, epochs=100, validation_d
     epoch_steps = (len(gen.classes)//gen.batch_size) + 1
     val_steps = (len(validation_data.classes)//validation_data.batch_size) + 1
     callbacks = callback_list(gen=validation_data, checkpoint_name=model_name)
-    history = model.fit_generator(
+    return model.fit_generator(
         generator=gen,
         steps_per_epoch=epoch_steps,
         epochs=epochs,
@@ -53,8 +48,6 @@ def fit_generator(model_name=None,model=None, gen=None, epochs=100, validation_d
         workers=workers,
         use_multiprocessing=use_multiprocessing
     )
-
-    return history
 
 @gin.configurable
 def save_model(model=None, model_name='test.h5'):

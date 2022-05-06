@@ -45,8 +45,8 @@ class CompVisExperiment:
         file_prep.create_modeling_dataset()
 
         self.unique_class_labels = file_prep.label_names
-        self.train_dir = os.path.join(exp_dir + '/train')
-        self.test_dir  = os.path.join(exp_dir + '/test')
+        self.train_dir = os.path.join(f'{exp_dir}/train')
+        self.test_dir = os.path.join(f'{exp_dir}/test')
 
 
     def standard_models(self):
@@ -87,7 +87,7 @@ class CompVisExperiment:
                 #print(f'\nModel name: {model_name} \nImage Size: {image_size}')
                 train_gen = directory_flow(dir=self.train_dir, shuffle=True, image_size=image_size)
                 test_gen = directory_flow(dir=self.test_dir, shuffle=False, image_size=image_size)
-                save_name = str(model_name) + ('.h5')
+                save_name = f'{str(model_name)}.h5'
                 history = fit_generator(
                     model_name=model_name,
                     model=compiled_models[model_name],

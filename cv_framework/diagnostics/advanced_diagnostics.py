@@ -1,4 +1,4 @@
-import keras
+import tensorflow as tf
 from vis.utils import utils
 import vis.input_modifiers
 import vis.visualization
@@ -14,7 +14,7 @@ def ActMax(model=None, layer_name=None, filter_index=None, backprop_modifier=Non
            lp_norm_weight=0., tv_weight=0., verbose=False, custom_objects=None, model_name=None, **opt_kwargs):
 
     layer_idx = vis.utils.utils.find_layer_idx(model, layer_name)
-    model.layers[layer_idx].activation = keras.activations.linear
+    model.layers[layer_idx].activation = tf.keras.activations.linear
     model = vis.utils.utils.apply_modifications(
         model,
         custom_objects=custom_objects)
@@ -30,7 +30,14 @@ def ActMax(model=None, layer_name=None, filter_index=None, backprop_modifier=Non
 
     plt.imshow(img[..., 0], cmap='jet')
 
-    fig_name = '/data/gferguso/cord_comp/visual/ActMax_' + str(filter_index) + '_' + str(layer_name) + '_' + model_name + '.png'
+    fig_name = (
+        f'/data/gferguso/cord_comp/visual/ActMax_{str(filter_index)}_'
+        + str(layer_name)
+        + '_'
+        + model_name
+        + '.png'
+    )
+
 
     plt.savefig(fig_name, format='png')
 
@@ -40,7 +47,7 @@ def ActMaxList(model=None, layer_name=None, filter_index=None, backprop_modifier
 
     # load and transform model
     layer_idx = vis.utils.utils.find_layer_idx(model, layer_name)
-    model.layers[layer_idx].activation = keras.activations.linear
+    model.layers[layer_idx].activation = tf.keras.activations.linear
     model = vis.utils.utils.apply_modifications(model, custom_objects=custom_objects)
 
     vis_images = []
@@ -93,12 +100,12 @@ def feature_maps_vis(model, backprop_modifier=None, grad_modifier=None, lp_norm_
 def saliency(model, images, class_index=None, layer_name=None, model_name=None, grad_modifier=None,
              backprop_modifier=None, custom_objects=None, image_size=None):
     layer_idx = vis.utils.utils.find_layer_idx(model, layer_name)
-    model.layers[layer_idx].activation = keras.activations.linear
+    model.layers[layer_idx].activation = tf.keras.activations.linear
     model = vis.utils.utils.apply_modifications(model, custom_objects=custom_objects)
     vis_images = []
     for img in images:
-        image = np.array(keras.preprocessing.image.load_img(img, target_size=image_size, color_mode='grayscale'))
-        image = image.reshape(image_size[0],image_size[1],1)
+        image = np.array(tf.keras.preprocessing.image.load_img(img, target_size=image_size, color_mode='grayscale'))
+        image = image.reshape(image_size[0],image_size[1])
         grads = vis.visualization.visualize_saliency(model, layer_idx, filter_indices=class_index, seed_input=image,
                                                      backprop_modifier=backprop_modifier, grad_modifier=grad_modifier)
         grad_img = vis.utils.utils.draw_text(grads.astype('uint8'), 'Class {}'.format(class_index), color=None)
@@ -115,11 +122,11 @@ def saliency(model, images, class_index=None, layer_name=None, model_name=None, 
 def CAM(model, images, class_index=None, layer_name=None, model_name=None, grad_modifier=None,
         backprop_modifier=None, custom_objects=None, image_size=None):
     layer_idx = vis.utils.utils.find_layer_idx(model, layer_name)
-    model.layers[layer_idx].activation = keras.activations.linear
+    model.layers[layer_idx].activation = tf.keras.activations.linear
     model = vis.utils.utils.apply_modifications(model, custom_objects=custom_objects)
     vis_images = []
     for img in images:
-        image = np.array(keras.preprocessing.image.load_img(img, target_size=image_size, color_mode='grayscale'))
+        image = np.array(tf.keras.preprocessing.image.load_img(img, target_size=image_size, color_mode='grayscale'))
         image = image.reshape(image_size[0],image_size[1],1)
         grads = vis.visualization.visualize_cam(model, layer_idx, filter_indices=class_index, seed_input=image,
                                                      backprop_modifier=backprop_modifier, grad_modifier=grad_modifier)
@@ -141,7 +148,7 @@ def shap_maps(model, shap_images, background_images, image_size=None, model_name
     background = []
     shap_list = []
     for b_img in background_images:
-        image = np.array(keras.preprocessing.image.load_img(b_img, target_size=image_size, color_mode='grayscale'))
+        image = np.array(tf.keras.preprocessing.image.load_img(b_img, target_size=image_size, color_mode='grayscale'))
         image = image.reshape(image_size[0], image_size[1], 1)
         background.append(image)
 
@@ -150,7 +157,7 @@ def shap_maps(model, shap_images, background_images, image_size=None, model_name
     e = shap.DeepExplainer(model, background)
 
     for s_img in shap_images:
-        image = np.array(keras.preprocessing.image.load_img(s_img, target_size=image_size, color_mode='grayscale'))
+        image = np.array(tf.keras.preprocessing.image.load_img(s_img, target_size=image_size, color_mode='grayscale'))
         image = image.reshape(image_size[0], image_size[1], 1)
         shap_list.append(image)
 
