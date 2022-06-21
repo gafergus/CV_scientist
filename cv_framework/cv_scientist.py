@@ -84,7 +84,7 @@ class CompVisExperiment:
             history_dict = {}
             with gin.config_scope(model_name):
                 image_size, _, _ = data_shape()
-                #print(f'\nModel name: {model_name} \nImage Size: {image_size}')
+                # print(f'\nModel name: {model_name} \nImage Size: {image_size}')
                 train_gen = directory_flow(dir=self.train_dir, shuffle=True, image_size=image_size)
                 test_gen = directory_flow(dir=self.test_dir, shuffle=False, image_size=image_size)
                 save_name = f'{str(model_name)}.h5'

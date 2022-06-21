@@ -1,7 +1,7 @@
-from keras.callbacks import Callback
+#from keras.callbacks import Callback
 import tensorflow as tf
 
-class Summary_metrics(Callback):
+class Summary_metrics(tf.keras.callbacks.Callback):
     def __init__(self, val_gen):
         super().__init__()
         self.validation_gen = val_gen
